@@ -1,0 +1,40 @@
+DROP TABLE IF EXISTS Track;
+DROP TABLE IF EXISTS Album;
+DROP TABLE IF EXISTS Artist;
+DROP TABLE IF EXISTS Genre;
+
+CREATE TABLE IF NOT EXISTS Artist (
+    id TINYINT UNSIGNED AUTO_INCREMENT, -- first artist will have id: 0001
+    name varchar(40) NOT NULL,
+    CONSTRAINT artist_PK PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS Genre (
+    id TINYINT UNSIGNED AUTO_INCREMENT,
+    description VARCHAR(255),
+    CONSTRAINT genre_PK PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS Album (
+    id TINYINT UNSIGNED AUTO_INCREMENT,
+    title VARCHAR(40) NOT NULL,
+    num_songs INT DEFAULT 0,
+    year INT NOT NULL,
+    genre_id TINYINT UNSIGNED,
+    CONSTRAINT album_PK PRIMARY KEY (id),
+    CONSTRAINT album_genre_FK FOREIGN KEY (genre_id) REFERENCES Genre(id)
+    ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+CREATE TABLE IF NOT EXISTS Track (
+    id TINYINT UNSIGNED AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    length INT DEFAULT 0, -- We assume here that it will be rounded to the next second
+    artist_id TINYINT UNSIGNED,
+    album_id TINYINT UNSIGNED,
+    CONSTRAINT track_PK PRIMARY KEY (id),
+    CONSTRAINT track_artist_FK FOREIGN KEY (artist_id) REFERENCES Artist(id)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT track_album_FK FOREIGN KEY (album_id) REFERENCES Album(id)
+    ON DELETE NO ACTION ON UPDATE NO ACTION
+);
