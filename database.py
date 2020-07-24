@@ -188,7 +188,13 @@ class DB:
     def create_table(self, query, values=None):
         return self._execute_query(query, values, action=self.CREATE_TABLE)
 
-    def insert(self, query, values=None):
+    def insert(self, query=None, table=None, attributes=None, values=None):
+        if not query:
+            wildcards = self.wildcars(len(values))
+            attributes_to_str = ", ".join(attributes)
+            query = """INSERT INTO {} ( {} ) VALUES ( {} )""".format(table, attributes_to_str, wildcards)
+            values = [x.strip(' ') for x in values]
+            values = tuple(values)
         return self._execute_query(query, values, action=self.INSERT)
 
     def update(self, query, values=None):
@@ -201,25 +207,24 @@ class DB:
         rows = self._execute_query(query, values, action=self.SELECT)
         return rows
 
+    def get_table_names(self):
+        query = """SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE 
+                   TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA=%s"""
+        tables = self.select(query, self._database)
+        return tables
 
+    def get_column_names(self, table):
+        query = """SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE 
+                   TABLE_SCHEMA = %s AND TABLE_NAME = %s"""
+        values = (self._database, table)
+        columns = self.select(query, values)
+        return columns
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def wildcars(self, num_wildcards):
+        list_wildcards = []
+        for i in range(num_wildcards):
+            list_wildcards.append('%s')
+        return ", ".join(list_wildcards)
 
 
 
