@@ -35,6 +35,7 @@ class DB:
         self._username = username
         self._password = password
         self._database = database
+        self._run_transaction = None
         if config_file:
             self.get_mysql_credentials(config_file, dbms)
 
@@ -53,6 +54,7 @@ class DB:
                 self._username = config[dbms]['username']
                 self._password = config[dbms]['password']
                 self._database = config[dbms]['database']
+                self._run_transaction = config[dbms]['transactions']
         except:
             print("Error: couldn't read config file")
 
