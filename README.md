@@ -7,4 +7,8 @@ Note that the following set of steps assume that you already have a MySQL instan
 
 ![Alt text](screenshot1.png?raw=true "Optional Title")
 
+3. Click on "Initialize Database"
+
+
+
 
