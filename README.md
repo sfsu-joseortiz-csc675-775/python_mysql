@@ -5,6 +5,6 @@ Note that the following set of steps assume that you already have a MySQL instan
 1. Open system preferences 
 2. Open MySQL 
 
-![Alt text](/relative/path/to/img.jpg?raw=true "Optional Title")
+![Alt text](/relative/path/to/screenshot 1.png?raw=true "Optional Title")
 
 
